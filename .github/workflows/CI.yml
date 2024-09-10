@@ -64,15 +64,11 @@ jobs:
           key: ${{secrets.SSH_PRIVATE_KEY}}
           script: |
             docker pull oswe/app:latest
-      #- name: Print Environment Variables
-      #  run: |
-      #    echo "PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}"
-      #    echo "HOSTNAME: $HOSTNAME"
-      #    echo "USER_NAME: $USER_NAME"
-      #- name: Connect using ssh
-      #  run: |
-      #    echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-      #    ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-      #          sudo docker pull oswe/app:latest
-      #    '
+            docker ps -q | xargs -r docker stop
+            docker ps -a -q | xargs -r docker rm
+            docker run -d -p 8080:8080 --name app oswe/app:latest
+            docker images -q | grep -v -e $(docker images -q --filter "reference=oswe/app:latest") | xargs -r docker rmi
+
+
+
          
