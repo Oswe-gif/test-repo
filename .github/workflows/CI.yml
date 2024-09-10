@@ -36,9 +36,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: |
-          echo "${{ secrets.DOCKERHUB_USERNAME }}"
-          echo "${{ secrets.DOCKERHUB_TOKEN }}"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -66,4 +63,4 @@ jobs:
       #    echo "USER_NAME: $USER_NAME"
       - name: Connect using ssh
         run: |
-          ssh -i ${PRIVATE_KEY} ${USER_NAME}@${HOSTNAME}            
+          sudo ssh -i ${PRIVATE_KEY} ${USER_NAME}@${HOSTNAME}            
