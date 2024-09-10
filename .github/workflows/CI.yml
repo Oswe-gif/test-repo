@@ -63,4 +63,5 @@ jobs:
       #    echo "USER_NAME: $USER_NAME"
       - name: Connect using ssh
         run: |
-          sudo ssh -i ${PRIVATE_KEY} ${USER_NAME}@${HOSTNAME}            
+          echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '          
