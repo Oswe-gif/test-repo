@@ -56,15 +56,23 @@ jobs:
             PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
             HOSTNAME: ${{secrets.SSH_HOST}}
             USER_NAME: ${{secrets.USER_NAME}}
+      - name: Deploy to Ec2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{secrets.USER_NAME}}
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          script: |
+            docker pull oswe/app:latest
       #- name: Print Environment Variables
       #  run: |
       #    echo "PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}"
       #    echo "HOSTNAME: $HOSTNAME"
       #    echo "USER_NAME: $USER_NAME"
-      - name: Connect using ssh
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-                sudo docker pull oswe/app:latest
-          '
+      #- name: Connect using ssh
+      #  run: |
+      #    echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+      #    ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+      #          sudo docker pull oswe/app:latest
+      #    '
          
