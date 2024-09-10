@@ -43,4 +43,4 @@ jobs:
           push: true
           tags: |
             oswe/app:latest
-            oswe/app:1.0.0
+            oswe/app:${{ github.sha }}
