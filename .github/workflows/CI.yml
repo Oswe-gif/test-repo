@@ -66,7 +66,7 @@ jobs:
             docker pull oswe/app:latest
             docker ps -q | xargs -r docker stop
             docker ps -a -q | xargs -r docker rm
-            docker run -d -p 8080:7055 --name app oswe/app:latest
+            docker run -d -p 8080:8080 --name app oswe/app:latest
             docker images -q | grep -v -e $(docker images -q --filter "reference=oswe/app:latest") | xargs -r docker rmi
 
 
