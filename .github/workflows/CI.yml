@@ -46,7 +46,7 @@ jobs:
             oswe/app:${{ github.sha }}
             oswe/app:latest
       - name: Send mail
-        if: failure()
+        if: always()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -81,6 +81,7 @@ jobs:
             docker run -d -p 8080:8080 --name app oswe/app:latest
             docker images -q | grep -v -e $(docker images -q --filter "reference=oswe/app:latest") | xargs -r docker rmi
       - name: Send mail
+        if: always()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
