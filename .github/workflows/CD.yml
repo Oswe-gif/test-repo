@@ -5,7 +5,7 @@ on:
 jobs: 
   CD-main:
     name: CD-main
-    needs: CI-main
+    #needs: CI-main
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4 
