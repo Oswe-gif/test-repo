@@ -1,8 +1,7 @@
 on:
   pull_request:
-    types: [synchronize]
-    branches:
-      - main
+    branches: ["main"]
+    types: [synchronize] 
 jobs: 
   CD-main:
     name: CD-main
