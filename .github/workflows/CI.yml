@@ -46,6 +46,7 @@ jobs:
             oswe/app:${{ github.sha }}
             oswe/app:latest
       - name: Send mail
+        if: failure()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
