@@ -54,7 +54,19 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
-          body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+          body: | 
+            The job ${{ github.job }} in workflow ${{ github.workflow }} of repository ${{ github.repository }} has ${{ job.status }}.
+
+            Commit: ${{ github.sha }}
+            Commit Author: ${{ github.actor }}
+            Commit Message: ${{ github.event.head_commit.message }}
+
+            Test Results:
+            ${{ steps.test.outcome == 'failure' && 'The following test errors were encountered:' || 'All tests passed successfully.' }}
+            ${{ steps.test.outcome == 'failure' && 'Test Log:\n' || '' }}${{ steps.test.outcome == 'failure' && steps.test.outputs.result || '' }}
+
+
+            For more details, visit the [GitHub Actions run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
           to: ${{secrets.EMAIL_WORKERS}}
           from: Tech-trend-emporium
 
