@@ -54,7 +54,7 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
           body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
-          to: ${{secrets.EMAIL_WORKERS}}
+          to: ${{ secrets.EMAIL_WORKERS }}
           from: Tech-trend-emporium
 
   CD-main:
