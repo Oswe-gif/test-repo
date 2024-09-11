@@ -108,7 +108,7 @@ jobs:
             Commit Author: ${{ github.actor }}
             Commit Message: ${{ github.event.head_commit.message }}
 
-            Test Status:
+            Status:
             ${{ steps.deploy.outcome == 'failure' && 'The deployment has failed.' || 'The deployment was successful.' }}
 
             For more details, visit the https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
