@@ -63,20 +63,20 @@ jobs:
             For more details, visit the https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
           to: ${{secrets.EMAIL_WORKERS}}
           from: Tech-trend-emporium
+  
   CD-main:
+    if: ${{github.event_name=='push'}}
     name: CD-main
     needs: CI-main
     runs-on: ubuntu-latest
     steps:
       - name: Load variables
-        if: ${{github.event_name=='push'}}
         uses: actions/checkout@v4 
         env:
             PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
             HOSTNAME: ${{secrets.SSH_HOST}}
             USER_NAME: ${{secrets.USER_NAME}}
       - name: Deploy to Ec2
-        if: ${{github.event_name=='push'}}
         id: deploy
         uses: appleboy/ssh-action@master
         with:
