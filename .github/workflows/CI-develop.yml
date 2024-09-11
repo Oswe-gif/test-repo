@@ -51,7 +51,7 @@ jobs:
             Commit Message: ${{ github.event.head_commit.message }}
 
             Test Status:
-            ${{ steps.testDev.outcome == 'failure' && 'Some tests failed.' || 'All tests passed successfully.' }}
+            ${{ steps.testDev.outcome != 'success' && 'Some tests failed.' || 'All tests passed successfully.' }}
 
             For more details, visit the https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
           to: ${{secrets.EMAIL_WORKERS}}
