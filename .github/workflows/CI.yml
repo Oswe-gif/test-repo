@@ -54,9 +54,9 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          subject: ${{ github.job }} job of ${{ github.repository }} - ${{ job.status }}
           body: | 
-            The job ${{ github.job }} in workflow ${{ github.workflow }} of repository ${{ github.repository }} has ${{ job.status }}.
+            The job ${{ github.job }} in workflow ${{ github.workflow }} of repository ${{ github.repository }} - ${{ job.status }}.
 
             Commit: ${{ github.sha }}
             Commit Author: ${{ github.actor }}
@@ -80,6 +80,7 @@ jobs:
             HOSTNAME: ${{secrets.SSH_HOST}}
             USER_NAME: ${{secrets.USER_NAME}}
       - name: Deploy to Ec2
+        id: deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{secrets.SSH_HOST}}
@@ -99,8 +100,18 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
-          body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+          subject: ${{ github.job }} job of ${{ github.repository }} - ${{ job.status }}
+          body: | 
+            The job ${{ github.job }} in workflow ${{ github.workflow }} of repository ${{ github.repository }} - ${{ job.status }}.
+
+            Commit: ${{ github.sha }}
+            Commit Author: ${{ github.actor }}
+            Commit Message: ${{ github.event.head_commit.message }}
+
+            Test Status:
+            ${{ steps.deploy.outcome == 'failure' && 'The deployment has failed.' || 'The deployment was successful.' }}
+
+            For more details, visit the https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
           to: ${{secrets.EMAIL_WORKERS}}
           from: Tech-trend-emporium
 
