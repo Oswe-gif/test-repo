@@ -1,10 +1,9 @@
 on:
   push:
-    branches: ["main"]
+    branches: ["develop"]
 jobs: 
-  CD-main:
-    name: CD-main
-    #needs: CI-main
+  CD-develop:
+    name: CD-develop
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4 
@@ -23,8 +22,8 @@ jobs:
             docker pull oswe/app:latest
             docker ps -q | xargs -r docker stop
             docker ps -a -q | xargs -r docker rm
-            docker run -d -p 8080:8080 --name app oswe/app:latest
-            docker images -q | grep -v -e $(docker images -q --filter "reference=oswe/app:latest") | xargs -r docker rmi
+            docker run -d -p 8081:8080 --name app oswe-develop/app:latest
+            docker images -q | grep -v -e $(docker images -q --filter "reference=oswe-develop/app:latest") -e $(docker images -q --filter "reference=oswe/app:latest") | xargs -r docker rmi
       - name: Send mail
         if: always()
         uses: dawidd6/action-send-mail@v3
