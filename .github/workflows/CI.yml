@@ -24,7 +24,8 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
-      - name: Test
+      - name: Tests
+        id: test
         run: dotnet test --no-build --verbosity normal
       
       - name: Set up QEMU
@@ -61,12 +62,10 @@ jobs:
             Commit Author: ${{ github.actor }}
             Commit Message: ${{ github.event.head_commit.message }}
 
-            Test Results:
-            ${{ steps.test.outcome == 'failure' && 'The following test errors were encountered:' || 'All tests passed successfully.' }}
-            ${{ steps.test.outcome == 'failure' && 'Test Log:\n' || '' }}${{ steps.test.outcome == 'failure' && steps.test.outputs.result || '' }}
+            Test Status:
+            ${{ steps.test.outcome == 'failure' && 'Some tests failed.' || 'All tests passed successfully.' }}
 
-
-            For more details, visit the [GitHub Actions run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+            For more details, visit the https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
           to: ${{secrets.EMAIL_WORKERS}}
           from: Tech-trend-emporium
 
