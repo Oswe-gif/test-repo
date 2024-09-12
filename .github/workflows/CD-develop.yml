@@ -18,10 +18,10 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           username: ${{secrets.USER_NAME}}
           key: ${{secrets.SSH_PRIVATE_KEY}}
-          stop-container: |
+          sync: true
+          script: |
             docker pull oswe/app-develop:latest
             docker stop app-develop
-          run-container: |
             docker run --rm -d -p 8081:8080 --name app-develop oswe/app-develop:latest
             docker images -q | grep -v -e $(docker images -q --filter "reference=oswe/app-develop:latest") -e $(docker images -q --filter "reference=oswe/app:latest") | xargs -r docker rmi
       - name: Send mail
