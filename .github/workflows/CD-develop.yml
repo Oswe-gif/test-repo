@@ -41,7 +41,7 @@ jobs:
             Commit Message: ${{ github.event.head_commit.message }}
 
             Status:
-            ${{ steps.deployDev.outcome == 'failure' && 'The deployment has failed.' || 'The deployment was successful.' }}
+            ${{ steps.deployDev.outcome != 'success' && 'The deployment has failed.' || 'The deployment was successful.' }}
 
             For more details, visit the https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
           to: ${{secrets.EMAIL_WORKERS}}
