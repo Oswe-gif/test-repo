@@ -19,7 +19,7 @@ jobs:
           username: ${{secrets.USER_NAME}}
           key: ${{secrets.SSH_PRIVATE_KEY}}
           sync: true
-          scripts: |
+          script: |
             docker pull oswe/app:latest
             docker stop app-prod
             docker run --rm -d -p 8080:8080 --name app-prod oswe/app:latest
