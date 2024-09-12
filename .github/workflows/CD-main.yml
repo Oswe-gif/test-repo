@@ -11,17 +11,23 @@ jobs:
             PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
             HOSTNAME: ${{secrets.SSH_HOST}}
             USER_NAME: ${{secrets.USER_NAME}}
-      - name: Deploy to Ec2
+      - name: stop the container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{secrets.USER_NAME}}
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          script: |
+            docker pull oswe/app:latest
+            docker stop app-prod
+      - name: run the container
         id: deployMain
         uses: appleboy/ssh-action@master
         with:
           host: ${{secrets.SSH_HOST}}
           username: ${{secrets.USER_NAME}}
           key: ${{secrets.SSH_PRIVATE_KEY}}
-          sync: true
           script: |
-            docker pull oswe/app:latest
-            docker stop app-prod
             docker run --rm -d -p 8080:8080 --name app-prod oswe/app:latest
             docker images -q | grep -v -e $(docker images -q --filter "reference=oswe/app:latest") -e $(docker images -q --filter "reference=oswe/app-develop:latest") | xargs -r docker rmi
       - name: Send mail
