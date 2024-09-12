@@ -21,8 +21,7 @@ jobs:
           script: |
             docker pull oswe/app:latest
             docker ps -q -f name=app | xargs -r docker stop
-            docker ps -a -q -f status=exited | xargs -r docker rm
-            docker run -d -p 8080:8080 --name app oswe/app:latest
+            docker run --rm -d -p 8080:8080 --name app oswe/app:latest
             docker images -q | grep -v -e $(docker images -q --filter "reference=oswe/app:latest") -e $(docker images -q --filter "reference=oswe/app-develop:latest") | xargs -r docker rmi
       - name: Send mail
         if: always()
@@ -41,7 +40,7 @@ jobs:
             Commit Message: ${{ github.event.head_commit.message }}
 
             Status:
-            ${{ steps.deployMain.outcome == 'failure' && 'The deployment has failed.' || 'The deployment was successful.' }}
+            ${{ steps.deployMain.outcome != 'success' && 'The deployment has failed.' || 'The deployment was successful.' }}
 
             For more details, visit the https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.
           to: ${{secrets.EMAIL_WORKERS}}
